@@ -1,0 +1,72 @@
+seed: 42                 
+oversample: 1.3          
+fichas_per_call: 5       
+
+# Taxas-alvo (frações do total de cada split)
+rates:
+  vague: 0.04            
+  overlap: 0.12          
+  multi_topic: 0.05      
+  label_noise_train: 0.07  
+
+# Probabilidade de o ticket conter a palavra "urgente", dado o rótulo de urgência
+urgent_word_prob:
+  alta: 0.30
+  normal: 0.12
+
+# Faixas de tamanho (em palavras) por comprimento; o validador usa estas faixas
+length_words:
+  curto: [4, 25]
+  medio: [26, 60]
+  longo: [61, 150]
+vague_max_words: 12
+
+splits:
+  train:
+    n: 8000
+    generator: A
+    seed_offset: 0
+    priority: 4          # menor prioridade: perde nas remoções de duplicatas
+    label_noise: true
+  val:
+    n: 1000
+    generator: A
+    seed_offset: 1000
+    priority: 3
+    label_noise: false
+  test_gen_b:
+    n: 1000
+    generator: B
+    seed_offset: 2000
+    priority: 2
+    label_noise: false
+    frozen: true         # recusar sobrescrever sem flag explícita
+
+dedup:
+  threshold: 0.90       
+  cross_split: true
+
+# Modelos
+# O gerador B deve usar um modelo de OUTRA família/geração que o gerador A.
+models:
+  A:
+    name: "gpt-5.4-nano"
+  B:
+    name: "gpt-4.1-mini"
+
+prices_usd_per_mtok:
+  "gpt-5.4-nano": {input: 0.20, output: 1.25}
+  "gpt-5.4-mini": {input: 0.75, output: 4.50}
+  "gpt-4.1-mini": {input: 0.40, output: 1.60}
+
+budget_usd: 15.0        
+
+client:
+  max_retries: 5
+  timeout_seconds: 60
+  concurrency: 4
+  cache_dir: "data/.cache"
+
+paths:
+  data_dir: "data"
+  manifest: "data/manifest.json"

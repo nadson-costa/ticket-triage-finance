@@ -1,0 +1,212 @@
+version: "1.1"
+
+urgency_criteria:
+  1: "Prazo curto com consequência: vencimento hoje ou amanhã (boleto, parcela, pagamento essencial)."
+  2: "Perda em andamento: golpe ou uso indevido acontecendo agora ou nas últimas horas."
+  3: "Operação irreversível a tempo: o cliente precisa que uma ação seja interrompida ou cancelada rapidamente."
+  4: "Acesso totalmente impedido com necessidade imediata declarada (por exemplo, não consegue pagar algo hoje)."
+  5: "Ameaça formal: o cliente menciona Procon, Banco Central ou ação judicial."
+
+categories:
+  pix:
+    name: "Pix e transferências"
+    share: 0.22
+    urgency_prior: 0.25
+    definition: "Problemas com envio, recebimento ou limites de Pix, TED e transferências, incluindo erros do próprio cliente (chave digitada errada)."
+    not_this: "Pix feito sob golpe pertence a fraude_seguranca."
+    subtopics:
+      - "Pix não chegou ao destinatário"
+      - "Pix enviado para chave errada"
+      - "limite do Pix"
+      - "Pix agendado não executado"
+      - "TED atrasada"
+      - "comprovante com informação divergente"
+    urgency_criteria: [1, 3, 4, 5]
+    confusable_with: [fraude_seguranca]
+
+  cartoes:
+    name: "Cartões"
+    share: 0.18
+    urgency_prior: 0.20
+    definition: "Funcionamento e administração de cartões de crédito e débito."
+    not_this: "Compra não reconhecida ou cartão roubado é fraude_seguranca; cobrança indevida é cobrancas_tarifas."
+    subtopics:
+      - "compra recusada com limite disponível"
+      - "fatura e data de fechamento"
+      - "aumento ou consulta de limite"
+      - "segunda via do cartão"
+      - "cartão não chegou"
+      - "cartão virtual"
+      - "parcelamento de fatura"
+      - "extravio simples sem suspeita de uso indevido"
+    urgency_criteria: [1, 4, 5]
+    confusable_with: [fraude_seguranca, cobrancas_tarifas]
+
+  conta_acesso:
+    name: "Conta e acesso ao app"
+    share: 0.15
+    urgency_prior: 0.20
+    definition: "Entrar, manter e gerenciar a conta no app."
+    not_this: "Suspeita de que terceiros acessaram a conta é fraude_seguranca."
+    subtopics:
+      - "senha esquecida"
+      - "biometria que não funciona"
+      - "troca de celular e código de verificação"
+      - "conta bloqueada"
+      - "atualização de dados cadastrais"
+      - "abertura de conta"
+      - "código de verificação que não chega"
+    urgency_criteria: [4, 5]
+    confusable_with: [fraude_seguranca]
+
+  cobrancas_tarifas:
+    name: "Cobranças e tarifas"
+    share: 0.12
+    urgency_prior: 0.10
+    definition: "O cliente considera que um valor cobrado está errado ou indevido."
+    not_this: "Operações de crédito (contratar, renegociar, quitar) pertencem a credito."
+    subtopics:
+      - "cobrança duplicada"
+      - "tarifa não esperada"
+      - "anuidade cobrada"
+      - "assinatura recorrente não reconhecida"
+      - "pedido de estorno"
+      - "juros questionados"
+      - "compra reconhecida mas produto não entregue"
+    urgency_criteria: [1, 5]
+    confusable_with: [cartoes, credito]
+
+  credito:
+    name: "Crédito e financiamento"
+    share: 0.12
+    urgency_prior: 0.15
+    definition: "Operações de crédito: contratar, simular, renegociar, quitar, antecipar ou pagar parcelas."
+    not_this: "Questionamento de valores cobrados pertence a cobrancas_tarifas."
+    subtopics:
+      - "empréstimo pessoal"
+      - "empréstimo consignado"
+      - "renegociação de dívida"
+      - "simulação de crédito"
+      - "boleto de parcela"
+      - "antecipação de parcelas"
+      - "limite de cheque especial"
+    urgency_criteria: [1, 5]
+    confusable_with: [cobrancas_tarifas]
+
+  fraude_seguranca:
+    name: "Fraude e segurança"
+    share: 0.08
+    urgency_prior: 0.80
+    definition: "Terceiro agindo sem autorização, golpe ou suspeita de invasão, em qualquer produto."
+    not_this: "Esquecimento de senha ou erro do próprio cliente sem terceiros envolvidos."
+    subtopics:
+      - "golpe do falso atendente"
+      - "boleto falso"
+      - "compra não reconhecida no cartão"
+      - "conta invadida"
+      - "cartão clonado"
+      - "roubo ou furto de cartão ou celular"
+      - "phishing por mensagem ou e-mail"
+      - "Pix feito sob golpe"
+    urgency_criteria: [2, 3, 5]
+    confusable_with: [pix, cartoes, conta_acesso]
+
+  investimentos:
+    name: "Investimentos"
+    share: 0.08
+    urgency_prior: 0.10
+    definition: "Produtos de investimento do banco e seus problemas."
+    not_this: "Pergunta pura de 'como fazer' pertence a duvidas_gerais."
+    subtopics:
+      - "rendimento diferente do esperado"
+      - "resgate que não caiu na conta"
+      - "aplicação que não aparece"
+      - "informe de rendimentos"
+      - "carência de resgate"
+    urgency_criteria: [1, 3, 5]
+    confusable_with: [duvidas_gerais]
+
+  duvidas_gerais:
+    name: "Dúvidas gerais"
+    share: 0.05
+    urgency_prior: 0.02
+    definition: "Perguntas informativas, sem falha e sem operação em andamento."
+    not_this: "Qualquer relato de erro ou falha vai para a categoria do produto."
+    subtopics:
+      - "como fazer algo no app"
+      - "horário e canais de atendimento"
+      - "taxas e tarifas em geral"
+      - "políticas do banco"
+      - "como emitir comprovante"
+    urgency_criteria: [1]
+    confusable_with: [investimentos]
+
+generators:
+  A:
+    personas:
+      - {id: cliente_comum, weight: 4}
+      - {id: usuario_iniciante, weight: 2}
+      - {id: colaborador_tecnico, weight: 2}
+      - {id: executivo_com_pressa, weight: 2}
+    tones:
+      - {id: formal, weight: 2}
+      - {id: informal, weight: 4}
+      - {id: educado, weight: 2}
+      - {id: irritado, weight: 2}
+    lengths:
+      - {id: curto, weight: 4}
+      - {id: medio, weight: 5}
+      - {id: longo, weight: 1}
+    style_noise:
+      - {id: abreviacoes, weight: 3}
+      - {id: sem_acentos, weight: 2}
+      - {id: typos_leves, weight: 2}
+      - {id: nenhum, weight: 3}
+
+  B:
+    personas:
+      - {id: cliente_idoso_pouco_digital, weight: 2}
+      - {id: microempreendedor, weight: 2}
+      - {id: descreve_so_o_sintoma, weight: 3}
+      - {id: reclamacao_publica, weight: 2}
+    tones:
+      - {id: formal, weight: 2}
+      - {id: informal, weight: 3}
+      - {id: confuso, weight: 2}
+      - {id: indignado, weight: 2}
+    lengths:
+      - {id: curto, weight: 2}
+      - {id: medio, weight: 4}
+      - {id: longo, weight: 4}
+    style_noise:
+      - {id: transcricao_audio_sem_pontuacao, weight: 2}
+      - {id: email_encaminhado_com_assinatura, weight: 2}
+      - {id: descricao_de_print, weight: 2}
+      - {id: mistura_pt_en, weight: 2}
+      - {id: girias_regionais, weight: 2}
+      - {id: contexto_irrelevante, weight: 2}
+      - {id: nenhum, weight: 1}
+
+allowed_placeholders:
+  - "<CPF>"
+  - "<CHAVE_PIX>"
+  - "<NUMERO_CARTAO>"
+  - "<TELEFONE>"
+  - "<EMAIL>"
+  - "<NOME>"
+
+blocked_brand_names:
+  - nubank
+  - itaú
+  - itau
+  - bradesco
+  - santander
+  - banco do brasil
+  - caixa econômica
+  - caixa economica
+  - inter
+  - c6
+  - picpay
+  - mercado pago
+  - xp investimentos
+  - btg
