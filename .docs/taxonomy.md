@@ -1,6 +1,6 @@
 # Taxonomia de tickets: banco/fintech de pessoa física
 
-> **Versão 1.0** (2026-10-31). Fonte de verdade para geração de dados, rotulagem e avaliação.
+> **Versão 1.1** (2026-10-31). Fonte de verdade para geração de dados, rotulagem e avaliação.
 > Qualquer mudança nas categorias ou regras exige **regerar os conjuntos congelados** e registrar no histórico (seção 14).
 
 ## 1. Objetivo e escopo
@@ -218,8 +218,13 @@ Um objeto JSON por linha:
 |---|---|---|
 | `id` | string | Identificador único |
 | `text` | string | Texto do ticket |
-| `category` | string | Código da categoria (seção 2) usado como rótulo |
+| `category` | string | Rótulo de categoria (seção 2) usado no treino; no conjunto de treino pode estar trocado por ruído de rótulo |
+| `true_category` | string | Categoria verdadeira da ficha; igual a `category` quando `label_noisy` é falso |
 | `urgency` | string | `alta` ou `normal` |
+| `urgency_criterion` | int ou null | Critério da seção 6 (1 a 5) que justifica urgência `alta`; nulo quando `normal` |
+| `uses_urgent_word` | bool | Se o ticket deve conter a palavra "urgente" (independente da urgência real) |
+| `length` | string | `curto`, `medio` ou `longo` |
+| `is_multi_topic` | bool | Ticket com dois assuntos (rotulado pela regra 5) |
 | `subtopic` | string | Subtópico sorteado |
 | `generator` | string | `A`, `B` ou `manual` |
 | `persona` | string | Persona sorteada |
@@ -249,3 +254,4 @@ Um objeto JSON por linha:
 | Versão | Data | Mudança |
 |---|---|---|
 | 1.0 | 2026-10-31 | Versão inicial |
+| 1.1 | 2026-10-31 | Esquema JSONL: adicionados `true_category`, `urgency_criterion`, `uses_urgent_word`, `length` e `is_multi_topic` |
